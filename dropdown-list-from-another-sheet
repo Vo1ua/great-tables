@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Create a Drop-Down List in Google Sheets from Another Sheet</title>
+  <meta name="description" content="Step-by-step guide to creating a drop-down list in Google Sheets using data from another sheet, including named ranges and dependent dropdowns.">
+  <meta name="robots" content="index, follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5;
+      --card: #FFFFFF;
+      --ink: #1C2B2E;
+      --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0;
+      --sheet-green: #1E7145;
+      --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2;
+      --error-red: #B3413A;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.65;
+      font-size: 18px;
+    }
+
+    .col-strip {
+      display: flex;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+    }
+    .col-strip span {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-right: 1px solid var(--grid-line);
+    }
+    .col-strip span:last-child { border-right: none; }
+
+    .formula-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .formula-bar .fx {
+      font-family: 'IBM Plex Mono', monospace;
+      font-style: italic;
+      color: var(--sheet-green);
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .formula-bar .formula-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      color: var(--ink-soft);
+      border-left: 1px solid var(--grid-line);
+      padding-left: 14px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--grid-line);
+      border-radius: 4px;
+      padding: 48px 56px;
+      box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06);
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 0 0 28px;
+      color: var(--ink);
+    }
+
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      margin: 44px 0 16px;
+      padding-left: 14px;
+      border-left: 3px solid var(--sheet-green);
+    }
+
+    h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--ink-soft);
+      margin: 28px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    p { margin: 0 0 18px; }
+
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88em;
+      background: var(--cell-highlight);
+      padding: 2px 7px;
+      border-radius: 3px;
+      border: 1px solid #E8D98A;
+      color: #4A3F00;
+    }
+
+    p > code { display: inline-block; margin: 2px 0; }
+
+    ul, ol {
+      margin: 0 0 20px;
+      padding-left: 22px;
+    }
+    li { margin-bottom: 8px; }
+
+    ul li strong, ol li strong {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+      font-size: 0.92em;
+    }
+
+    .callout {
+      background: var(--sheet-green-soft);
+      border-left: 3px solid var(--sheet-green);
+      padding: 14px 18px;
+      border-radius: 0 4px 4px 0;
+      font-size: 16px;
+      margin: 0 0 20px;
+    }
+
+    .error-block {
+      border-left: 3px solid var(--error-red);
+      padding-left: 14px;
+    }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+    }
+    footer a {
+      color: var(--sheet-green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--sheet-green);
+    }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 25px; }
+      body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">fx</span>
+    <span class="formula-text">=Data!A2:A</span>
+  </div>
+
+  <main>
+    <div class="card">
+      <article>
+
+        <h1>How to Create a Drop-Down List in Google Sheets from Another Sheet</h1>
+
+        <p>
+          Drop-down lists keep data entry clean and consistent — instead of people typing
+          "USA," "U.S.A.," and "United States" into the same column, they pick one option from
+          a fixed list. Things get slightly trickier when the list of options lives on a
+          different tab than the cell you want the dropdown in. This guide walks through exactly
+          how to pull that off, from the basic range reference to a fully dynamic setup with
+          named ranges.
+        </p>
+
+        <h2>The Basic Method: Range Reference</h2>
+        <p>
+          Let's say you have a tab called <strong>Data</strong> that lists valid options in
+          column A, and you want a dropdown on your <strong>Form</strong> tab that pulls from it.
+        </p>
+        <ol>
+          <li>Go to the <strong>Form</strong> tab and select the cell (or range of cells) where you want the dropdown to appear.</li>
+          <li>Open the menu: <strong>Data</strong> → <strong>Data validation</strong>.</li>
+          <li>Click <strong>Add rule</strong>.</li>
+          <li>Under Criteria, choose <strong>Dropdown (from a range)</strong>.</li>
+          <li>Click the small grid icon and select the range on your Data tab — for example <code>Data!A2:A20</code>.</li>
+          <li>Click <strong>Done</strong>.</li>
+        </ol>
+        <div class="callout">
+          Your Form tab now shows a dropdown chip. Clicking it displays the exact list of
+          options stored on the Data tab — and if you edit that list later, the dropdown updates
+          automatically.
+        </div>
+
+        <h2>Making the List Grow Automatically</h2>
+        <p>
+          A fixed range like <code>Data!A2:A20</code> works, but it won't include new items you
+          add below row 20. To avoid manually expanding the range every time, use an open-ended
+          reference instead:
+        </p>
+        <p><code>Data!A2:A</code></p>
+        <p>
+          This tells Google Sheets to include everything from row 2 down to the last filled row
+          in column A — no matter how many items you add later.
+        </p>
+
+        <h2>Using a Named Range Instead</h2>
+        <p>
+          If you reuse the same list in several dropdowns across your spreadsheet, a named range
+          keeps things easier to manage than repeating the same tab-and-cell reference everywhere.
+        </p>
+        <ol>
+          <li>Select the range on your Data tab (for example <code>A2:A</code>).</li>
+          <li>Go to <strong>Data</strong> → <strong>Named ranges</strong>.</li>
+          <li>Give it a clear name, like <code>CategoryList</code>, and click <strong>Done</strong>.</li>
+          <li>Back in Data validation on your Form tab, choose <strong>Dropdown (from a range)</strong> and type <code>=CategoryList</code> instead of the cell reference.</li>
+        </ol>
+        <p>
+          Now, if you ever move the source data to a different tab, you only need to update the
+          named range once — every dropdown using it will update automatically.
+        </p>
+
+        <h2>Dependent Dropdowns (Optional, More Advanced)</h2>
+        <p>
+          Sometimes one dropdown should depend on another — for example, choosing a "Category"
+          first should limit the "Item" dropdown to only items in that category. This usually
+          requires combining named ranges with the <strong>INDIRECT</strong> function, so the
+          Data Validation range changes based on another cell's value. It's a more advanced setup
+          worth its own separate tutorial — but the two techniques above are the foundation it's
+          built on.
+        </p>
+
+        <h2>Common Issues</h2>
+
+        <div class="error-block">
+          <h3>Dropdown Shows No Options</h3>
+          <p>
+            This usually means the range reference points to empty cells, or the sheet name in
+            the reference doesn't match the actual tab name exactly. Double-check both.
+          </p>
+        </div>
+
+        <div class="error-block">
+          <h3>List Includes Blank Options</h3>
+          <p>
+            If your range includes empty rows at the end (like <code>A2:A50</code> when you only
+            have 10 items), the dropdown will show blank entries too. Switch to an open-ended
+            range like <code>A2:A</code> to avoid this.
+          </p>
+        </div>
+
+        <h2>Bonus: Pulling the List from a Different Spreadsheet File</h2>
+        <p>
+          Everything above assumes both tabs are in the same spreadsheet file. If your list of
+          options lives in a completely separate Google Sheets file, you'll need to bring the
+          data in first using the <strong>IMPORTRANGE</strong> function, then build your dropdown
+          from that imported range. We covered the basics of cross-file references in an earlier
+          article on referencing cells between tabs.
+        </p>
+
+        <p>
+          Once you're comfortable pulling dropdown options from another tab, you can separate
+          your raw data from the parts of the spreadsheet people actually interact with — keeping
+          things cleaner, easier to update, and less error-prone for anyone entering data.
+        </p>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a>
+  </footer>
+
+</body>
+</html>
