@@ -6,125 +6,313 @@
   <title>How to Refer to a Cell in Another Tab in Google Sheets (Step-by-Step)</title>
   <meta name="description" content="Learn the simple formula to reference a cell from another tab in Google Sheets, with clear step-by-step examples for beginners.">
   <meta name="robots" content="index, follow">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5;
+      --card: #FFFFFF;
+      --ink: #1C2B2E;
+      --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0;
+      --sheet-green: #1E7145;
+      --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2;
+      --error-red: #B3413A;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.65;
+      font-size: 18px;
+    }
+
+    /* Column-letter strip, evokes a spreadsheet header row */
+    .col-strip {
+      display: flex;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+    }
+    .col-strip span {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-right: 1px solid var(--grid-line);
+    }
+    .col-strip span:last-child { border-right: none; }
+
+    /* Formula-bar style header, the signature element */
+    .formula-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .formula-bar .fx {
+      font-family: 'IBM Plex Mono', monospace;
+      font-style: italic;
+      color: var(--sheet-green);
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .formula-bar .formula-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      color: var(--ink-soft);
+      border-left: 1px solid var(--grid-line);
+      padding-left: 14px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--grid-line);
+      border-radius: 4px;
+      padding: 48px 56px;
+      box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06);
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 700;
+      font-size: 34px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 0 0 28px;
+      color: var(--ink);
+    }
+
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 22px;
+      margin: 44px 0 16px;
+      padding-left: 14px;
+      border-left: 3px solid var(--sheet-green);
+    }
+
+    h3 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 17px;
+      color: var(--ink-soft);
+      margin: 28px 0 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    p { margin: 0 0 18px; }
+
+    code {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 0.88em;
+      background: var(--cell-highlight);
+      padding: 2px 7px;
+      border-radius: 3px;
+      border: 1px solid #E8D98A;
+      color: #4A3F00;
+    }
+
+    p > code { display: inline-block; margin: 2px 0; }
+
+    ul, ol {
+      margin: 0 0 20px;
+      padding-left: 22px;
+    }
+    li { margin-bottom: 8px; }
+
+    ul li strong {
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+      font-size: 0.92em;
+    }
+
+    .callout {
+      background: var(--sheet-green-soft);
+      border-left: 3px solid var(--sheet-green);
+      padding: 14px 18px;
+      border-radius: 0 4px 4px 0;
+      font-size: 16px;
+      margin: 0 0 20px;
+    }
+
+    .error-block {
+      border-left: 3px solid var(--error-red);
+      padding-left: 14px;
+    }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+    }
+    footer a {
+      color: var(--sheet-green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--sheet-green);
+    }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 26px; }
+      body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
 </head>
 <body>
 
-  <header>
-    <h1>How to Refer to a Cell in Another Tab in Google Sheets</h1>
-  </header>
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">fx</span>
+    <span class="formula-text">=Sales!D5</span>
+  </div>
 
   <main>
-    <article>
+    <div class="card">
+      <article>
 
-      <p>
-        If your data is spread across multiple tabs — say, a "Sales" tab and a "Summary" tab —
-        you don't need to copy and paste values back and forth every time something changes.
-        Google Sheets lets you refer to a cell in another tab with a simple formula, so the data
-        updates automatically whenever the source changes. In this guide, you'll learn the basic
-        formula, see a full step-by-step example, and find out how to fix the most common errors
-        people run into.
-      </p>
+        <h1>How to Refer to a Cell in Another Tab in Google Sheets</h1>
 
-      <h2>Basic Formula for Referencing Another Tab</h2>
-      <p>
-        The formula for referencing a cell in another tab follows this pattern:
-      </p>
-      <p><code>=SheetName!CellReference</code></p>
-      <p>
-        Here's what each part means:
-      </p>
-      <ul>
-        <li><strong>=</strong> — every formula in Google Sheets starts with an equals sign</li>
-        <li><strong>SheetName</strong> — the exact name of the tab you want to pull data from</li>
-        <li><strong>!</strong> — the exclamation point separates the sheet name from the cell reference</li>
-        <li><strong>CellReference</strong> — the specific cell you want to pull, like A1 or B5</li>
-      </ul>
-      <p>
-        For example, if you want to pull cell A1 from a tab named "Sales," the formula would be
-        <code>=Sales!A1</code>.
-      </p>
+        <p>
+          If your data is spread across multiple tabs — say, a "Sales" tab and a "Summary" tab —
+          you don't need to copy and paste values back and forth every time something changes.
+          Google Sheets lets you refer to a cell in another tab with a simple formula, so the data
+          updates automatically whenever the source changes. In this guide, you'll learn the basic
+          formula, see a full step-by-step example, and find out how to fix the most common errors
+          people run into.
+        </p>
 
-      <h2>Step-by-Step Example</h2>
-      <p>
-        Let's say you have a tab called <strong>Sales</strong> with monthly numbers, and a tab
-        called <strong>Summary</strong> where you want those numbers to appear automatically.
-      </p>
+        <h2>Basic Formula for Referencing Another Tab</h2>
+        <p>The formula for referencing a cell in another tab follows this pattern:</p>
+        <p><code>=SheetName!CellReference</code></p>
+        <p>Here's what each part means:</p>
+        <ul>
+          <li><strong>=</strong> — every formula in Google Sheets starts with an equals sign</li>
+          <li><strong>SheetName</strong> — the exact name of the tab you want to pull data from</li>
+          <li><strong>!</strong> — the exclamation point separates the sheet name from the cell reference</li>
+          <li><strong>CellReference</strong> — the specific cell you want to pull, like A1 or B5</li>
+        </ul>
+        <p>
+          For example, if you want to pull cell A1 from a tab named "Sales," the formula would be
+          <code>=Sales!A1</code>.
+        </p>
 
-      <h3>Referencing a Single Cell</h3>
-      <ol>
-        <li>Open your Google Sheets file and go to the <strong>Summary</strong> tab.</li>
-        <li>Click the cell where you want the data to appear (for example, B2).</li>
-        <li>Type an equals sign: <code>=</code></li>
-        <li>Click the <strong>Sales</strong> tab at the bottom of the screen.</li>
-        <li>Click the cell you want to pull, for example D5.</li>
-        <li>Press Enter.</li>
-      </ol>
-      <p>
-        Google Sheets will automatically write the formula for you — in this case,
-        <code>=Sales!D5</code> — and the value from the Sales tab will appear in your Summary tab.
-        If the value in Sales!D5 changes later, the Summary tab updates instantly.
-      </p>
+        <h2>Step-by-Step Example</h2>
+        <p>
+          Let's say you have a tab called <strong>Sales</strong> with monthly numbers, and a tab
+          called <strong>Summary</strong> where you want those numbers to appear automatically.
+        </p>
 
-      <h3>Referencing a Range of Cells</h3>
-      <p>
-        You can also pull an entire range instead of a single cell. For example, to bring in
-        all sales figures from D2 to D10 on the Sales tab:
-      </p>
-      <p><code>=Sales!D2:D10</code></p>
-      <p>
-        Type this formula into the starting cell on your Summary tab, and Google Sheets will
-        automatically fill in the referenced range below it.
-      </p>
+        <h3>Referencing a Single Cell</h3>
+        <ol>
+          <li>Open your Google Sheets file and go to the <strong>Summary</strong> tab.</li>
+          <li>Click the cell where you want the data to appear (for example, B2).</li>
+          <li>Type an equals sign: <code>=</code></li>
+          <li>Click the <strong>Sales</strong> tab at the bottom of the screen.</li>
+          <li>Click the cell you want to pull, for example D5.</li>
+          <li>Press Enter.</li>
+        </ol>
+        <div class="callout">
+          Google Sheets writes the formula for you automatically — in this case
+          <code>=Sales!D5</code> — and the value updates instantly if the source cell changes.
+        </div>
 
-      <h2>What If the Sheet Name Has Spaces?</h2>
-      <p>
-        If your tab name contains spaces or special characters — like "Sales Data" instead of
-        "Sales" — you need to wrap the sheet name in single quotes. Otherwise, Google Sheets
-        won't understand where the sheet name ends and the cell reference begins.
-      </p>
-      <p><code>='Sales Data'!D5</code></p>
-      <p>
-        A simple habit that avoids this issue entirely: name your tabs without spaces (for
-        example, "SalesData" or "Sales_Data") whenever you can.
-      </p>
+        <h3>Referencing a Range of Cells</h3>
+        <p>
+          You can also pull an entire range instead of a single cell. For example, to bring in
+          all sales figures from D2 to D10 on the Sales tab:
+        </p>
+        <p><code>=Sales!D2:D10</code></p>
+        <p>
+          Type this formula into the starting cell on your Summary tab, and Google Sheets will
+          automatically fill in the referenced range below it.
+        </p>
 
-      <h2>Common Errors and How to Fix Them</h2>
+        <h2>What If the Sheet Name Has Spaces?</h2>
+        <p>
+          If your tab name contains spaces or special characters — like "Sales Data" instead of
+          "Sales" — wrap the sheet name in single quotes. Otherwise, Google Sheets won't know
+          where the sheet name ends and the cell reference begins.
+        </p>
+        <p><code>='Sales Data'!D5</code></p>
+        <p>
+          A simple habit that avoids this issue entirely: name your tabs without spaces (for
+          example, "SalesData" or "Sales_Data") whenever you can.
+        </p>
 
-      <h3>#REF! Error</h3>
-      <p>
-        This error appears when the tab or cell you're referencing no longer exists — usually
-        because the sheet was deleted or renamed. To fix it, check that the sheet name in your
-        formula matches an existing tab exactly, then update the reference if needed.
-      </p>
+        <h2>Common Errors and How to Fix Them</h2>
 
-      <h3>Typo in the Sheet Name</h3>
-      <p>
-        A common mistake is misspelling the tab name or forgetting the single quotes around
-        names with spaces. Sheet names in formulas aren't case-sensitive, but they do need to
-        match exactly otherwise, including spaces and punctuation.
-      </p>
+        <div class="error-block">
+          <h3>#REF! Error</h3>
+          <p>
+            This error appears when the tab or cell you're referencing no longer exists —
+            usually because the sheet was deleted or renamed. To fix it, check that the sheet
+            name in your formula matches an existing tab exactly, then update the reference.
+          </p>
+        </div>
 
-      <h2>Bonus: Referencing a Cell in a Completely Different Spreadsheet</h2>
-      <p>
-        Everything above works when both tabs live in the same spreadsheet file. If you need to
-        pull data from a completely separate Google Sheets file, you'll need a different function
-        called <strong>IMPORTRANGE</strong>, which requires granting access between the two files.
-        That's a bigger topic on its own — we'll cover it in a future article.
-      </p>
+        <div class="error-block">
+          <h3>Typo in the Sheet Name</h3>
+          <p>
+            A common mistake is misspelling the tab name or forgetting the single quotes around
+            names with spaces. Sheet names in formulas aren't case-sensitive, but they do need to
+            match exactly otherwise, including spaces and punctuation.
+          </p>
+        </div>
 
-      <p>
-        Referencing cells across tabs is one of the most useful habits to build in Google Sheets.
-        Once you're comfortable with the basic <code>=SheetName!CellReference</code> pattern, you
-        can start connecting dashboards, summaries, and reports so they update automatically —
-        no more manual copy-pasting. Try it on one of your own spreadsheets and see how much time
-        it saves.
-      </p>
+        <h2>Bonus: Referencing a Cell in a Completely Different Spreadsheet</h2>
+        <p>
+          Everything above works when both tabs live in the same spreadsheet file. If you need to
+          pull data from a completely separate Google Sheets file, you'll need a different
+          function called <strong>IMPORTRANGE</strong>, which requires granting access between the
+          two files. That's a bigger topic on its own — we'll cover it in a future article.
+        </p>
 
-    </article>
+        <p>
+          Referencing cells across tabs is one of the most useful habits to build in Google
+          Sheets. Once you're comfortable with the basic <code>=SheetName!CellReference</code>
+          pattern, you can start connecting dashboards, summaries, and reports so they update
+          automatically — no more manual copy-pasting. Try it on one of your own spreadsheets and
+          see how much time it saves.
+        </p>
+
+      </article>
+    </div>
   </main>
 
   <footer>
-    <p><a href="index.html">&larr; Back to Home</a></p>
+    <a href="index.html">&larr; Back to Home</a>
   </footer>
 
 </body>
