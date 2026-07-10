@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About — Great Tables</title>
+  <meta name="description" content="Why Great Tables exists: a learning project for practicing Google Sheets tutorials and SEO, written by someone learning in public.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vo1ua.github.io/great-tables/about.html">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5;
+      --card: #FFFFFF;
+      --ink: #1C2B2E;
+      --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0;
+      --sheet-green: #1E7145;
+      --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.65;
+      font-size: 18px;
+    }
+
+    .col-strip {
+      display: flex;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+    }
+    .col-strip span {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-right: 1px solid var(--grid-line);
+    }
+    .col-strip span:last-child { border-right: none; }
+
+    .formula-bar {
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .formula-bar .fx {
+      font-family: 'IBM Plex Mono', monospace;
+      font-style: italic;
+      color: var(--sheet-green);
+      font-weight: 600;
+      font-size: 15px;
+    }
+    .formula-bar .formula-text {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      color: var(--ink-soft);
+      border-left: 1px solid var(--grid-line);
+      padding-left: 14px;
+    }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--grid-line);
+      border-radius: 4px;
+      padding: 48px 56px;
+      box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06);
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 700;
+      font-size: 32px;
+      line-height: 1.25;
+      letter-spacing: -0.01em;
+      margin: 0 0 28px;
+      color: var(--ink);
+    }
+
+    h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 600;
+      font-size: 21px;
+      margin: 36px 0 14px;
+      padding-left: 14px;
+      border-left: 3px solid var(--sheet-green);
+    }
+
+    p { margin: 0 0 18px; }
+
+    ul { margin: 0 0 20px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+
+    a.inline-link {
+      color: var(--sheet-green);
+      text-decoration: underline;
+    }
+
+    .contact-box {
+      background: var(--sheet-green-soft);
+      border-left: 3px solid var(--sheet-green);
+      padding: 16px 20px;
+      border-radius: 0 4px 4px 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 15px;
+      margin: 20px 0;
+    }
+    .contact-box a { color: var(--ink); }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 0 24px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+    }
+    footer a {
+      color: var(--sheet-green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--sheet-green);
+    }
+    footer a:hover { opacity: 0.75; }
+
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; }
+      h1 { font-size: 25px; }
+      body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">fx</span>
+    <span class="formula-text">=About!A1</span>
+  </div>
+
+  <main>
+    <div class="card">
+      <article>
+
+        <h1>About Great Tables</h1>
+
+        <p>
+          Great Tables is a small tutorial site focused on one thing: practical, step-by-step
+          Google Sheets guides. No account required, no unnecessary padding — just the formula
+          or feature you're looking for, explained clearly with a working example.
+        </p>
+
+        <h2>Why This Site Exists</h2>
+        <p>
+          This project started as a hands-on way to learn SEO — researching real search
+          questions, writing content that actually answers them, and publishing it the same
+          way a real small business or independent blogger would. Every tutorial here is tested
+          in an actual Google Sheets file before being written up, rather than copied or
+          paraphrased from other sources.
+        </p>
+
+        <h2>How Tutorials Are Written</h2>
+        <ul>
+          <li>Each topic starts from a real question people search for.</li>
+          <li>Steps are tested directly in Google Sheets, not assumed from memory.</li>
+          <li>Formulas are shown exactly as they appear in the formula bar, not simplified to the point of being wrong.</li>
+          <li>Articles are updated when Google Sheets changes how a feature works.</li>
+        </ul>
+
+        <h2>Contact</h2>
+        <p>
+          Spotted an error, an outdated step, or have a tutorial request? Reach out — feedback
+          directly improves the accuracy of this site.
+        </p>
+        <div class="contact-box">
+          <a href="https://github.com/Vo1ua" target="_blank" rel="noopener">github.com/Vo1ua</a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a>
+  </footer>
+
+</body>
+</html>
