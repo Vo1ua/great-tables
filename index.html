@@ -203,6 +203,18 @@
       body { font-size: 16.5px; }
       .col-strip span:nth-child(n+7) { display: none; }
     }
+
+    footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+footer .separator {
+  color: var(--grid-line);
+}
+    
   </style>
  <script type="application/ld+json">
 {
@@ -263,7 +275,8 @@
   </main>
 
   <footer>
-    &copy; 2026 Great Tables — a learning project for practicing Google Sheets and SEO
+    <span>&copy; 2026 Great Tables — a learning project for practicing Google Sheets and SEO</span>
+    <span class="separator">·</span>
     <a href="about.html">About</a>
   </footer>
 
