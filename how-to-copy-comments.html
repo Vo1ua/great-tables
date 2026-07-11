@@ -257,6 +257,39 @@
   ]
 }
 </script> 
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does regular Ctrl+C / Ctrl+V copy comments in Google Sheets?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. A normal copy-paste only copies the cell's value or formula — the comment is a separate object and stays behind."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can I copy just one comment without duplicating the whole sheet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes — open the comment, copy its text manually, then paste it into a new comment on the destination cell."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Does \"Make a copy\" preserve comment threads and replies?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, as long as the Copy comments checkbox is ticked before clicking Make a copy — it preserves the full thread, including replies."
+      }
+    }
+  ]
+}
+</script>
   
 </head>
 <body>
@@ -372,6 +405,26 @@
           spreadsheet or building a new template from an existing one.
         </p>
 
+        <h2>Frequently Asked Questions</h2>
+
+<h3>Does regular Ctrl+C / Ctrl+V copy comments in Google Sheets?</h3>
+<p>
+  No. A normal copy-paste only copies the cell's value or formula — the comment is a separate
+  object and stays behind.
+</p>
+
+<h3>Can I copy just one comment without duplicating the whole sheet?</h3>
+<p>
+  Yes — open the comment, copy its text manually, then paste it into a new comment on the
+  destination cell.
+</p>
+
+<h3>Does "Make a copy" preserve comment threads and replies?</h3>
+<p>
+  Yes, as long as the "Copy comments" checkbox is ticked before clicking "Make a copy" — it
+  preserves the full thread, including replies.
+</p>
+          
           <div class="related-tutorials">
           <div class="section-label">Related tutorials</div>
             <a href="refer-to-cell-in-another-tab.html">How to Refer to a Cell in Another Tab</a>
