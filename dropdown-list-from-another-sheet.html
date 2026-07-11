@@ -259,6 +259,41 @@
   ]
 }
 </script>
+
+  <script type="application/ld+json">
+    {
+    "@context": "https://sсhema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Will the dropdown update if I add new items to the source list?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Only if you use an open-ended range like <code>Data!A2:A</code> instead of a fixed range like
+  <code>Data!A2:A20</code>. Open-ended ranges automatically include new rows."
+          }
+        },
+      {
+      "@type": "Question",
+      "name": "Can I use a dropdown list from a different spreadsheet file?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not directly. You'll first need to bring the data in using the IMPORTRANGE function, then
+  build the dropdown from that imported range."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my dropdown show blank options?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This usually happens when the selected range includes empty rows at the end. Switch to an
+  open-ended range like <code>A2:A</code> to fix it."
+      }
+    }
+  ]
+}
   
 </head>
 <body>
@@ -385,6 +420,26 @@
           things cleaner, easier to update, and less error-prone for anyone entering data.
         </p>
 
+         <h2>Frequently Asked Questions</h2>
+
+<h3>Will the dropdown update if I add new items to the source list?</h3>
+<p>
+  Only if you use an open-ended range like <code>Data!A2:A</code> instead of a fixed range like
+  <code>Data!A2:A20</code>. Open-ended ranges automatically include new rows.
+</p>
+
+<h3>Can I use a dropdown list from a different spreadsheet file?</h3>
+<p>
+  Not directly. You'll first need to bring the data in using the IMPORTRANGE function, then
+  build the dropdown from that imported range.
+</p>
+
+<h3>Why does my dropdown show blank options?</h3>
+<p>
+  This usually happens when the selected range includes empty rows at the end. Switch to an
+  open-ended range like <code>A2:A</code> to fix it.
+</p>
+        
           <div class="related-tutorials">
           <div class="section-label">Related tutorials</div>
             <a href="refer-to-cell-in-another-tab.html">How to Refer to a Cell in Another Tab</a>
