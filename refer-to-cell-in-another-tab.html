@@ -262,19 +262,19 @@
 </script>
 
   <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
     {
-    "@context": "https://sсhema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Can I reference a cell from a completely different spreadsheet?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Not with this basic formula — you need the IMPORTRANGE function instead, which requires granting access between the two files."
-          }
-        },
-      {
+      "@type": "Question",
+      "name": "Can I reference a cell from a completely different spreadsheet?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Not with this basic formula — you need the IMPORTRANGE function instead, which requires granting access between the two files."
+      }
+    },
+    {
       "@type": "Question",
       "name": "Does the formula update automatically if I edit the source cell?",
       "acceptedAnswer": {
