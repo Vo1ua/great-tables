@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://vo1ua.github.io/great-tables/sitemap.xml
