@@ -261,26 +261,24 @@
 </script>
 
   <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
     {
-    "@context": "https://schema.org",
-    "@type": "FAQPage",
-    "mainEntity": [
-      {
-        "@type": "Question",
-        "name": "Will the dropdown update if I add new items to the source list?",
-        "acceptedAnswer": {
-          "@type": "Answer",
-          "text": "Only if you use an open-ended range like <code>Data!A2:A</code> instead of a fixed range like
-  <code>Data!A2:A20</code>. Open-ended ranges automatically include new rows."
-          }
-        },
-      {
+      "@type": "Question",
+      "name": "Will the dropdown update if I add new items to the source list?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Only if you use an open-ended range like Data!A2:A instead of a fixed range like Data!A2:A20. Open-ended ranges automatically include new rows."
+      }
+    },
+    {
       "@type": "Question",
       "name": "Can I use a dropdown list from a different spreadsheet file?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "Not directly. You'll first need to bring the data in using the IMPORTRANGE function, then
-  build the dropdown from that imported range."
+        "text": "Not directly. You first need to bring the data in using the IMPORTRANGE function, then build the dropdown from that imported range."
       }
     },
     {
@@ -288,13 +286,12 @@
       "name": "Why does my dropdown show blank options?",
       "acceptedAnswer": {
         "@type": "Answer",
-        "text": "This usually happens when the selected range includes empty rows at the end. Switch to an
-  open-ended range like <code>A2:A</code> to fix it."
+        "text": "This usually happens when the selected range includes empty rows at the end. Switch to an open-ended range like A2:A to fix it."
       }
     }
   ]
 }
-  </script>
+</script>
   
 </head>
 <body>
