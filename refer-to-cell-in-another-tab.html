@@ -260,7 +260,40 @@
   ]
 }
 </script>
-  
+
+  <script type="application/ld+json">
+    {
+    "@context": "https://shema.org",
+    "@type": "FAQ",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Can I reference a cell from a completely different spreadsheet?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Not with this basic formula — you need the IMPORTRANGE function instead, which requires granting access between the two files."
+          }
+        },
+      {
+      "@type": "Question",
+      "name": "Does the formula update automatically if I edit the source cell?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Since the formula is a live reference, not a copied value, it updates instantly whenever the original cell changes."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I delete the tab I'm referencing?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "The formula will show a #REF! error, since the cell it points to no longer exists. You need to update the reference manually."
+      }
+    }
+  ]
+}
+</script>
+    
 </head>
 <body>
 
@@ -399,6 +432,26 @@
           see how much time it saves.
         </p>
 
+        <h2>Frequently Asked Questions</h2>
+
+<h3>Can I reference a cell from a completely different spreadsheet?</h3>
+<p>
+  Not with this basic formula — you'll need the IMPORTRANGE function instead, which requires
+  granting access between the two files.
+</p>
+
+<h3>Does the formula update automatically if I edit the source cell?</h3>
+<p>
+  Yes. Since the formula is a live reference, not a copied value, it updates instantly whenever
+  the original cell changes.
+</p>
+
+<h3>What happens if I delete the tab I'm referencing?</h3>
+<p>
+  The formula will show a #REF! error, since the cell it points to no longer exists. You'll need
+  to update the reference manually.
+</p>
+        
         <div class="related-tutorials">
         <div class="section-label">Related tutorials</div>
           <a href="dropdown-list-from-another-sheet.html">How to Create a Drop-Down List from Another Sheet</a>
