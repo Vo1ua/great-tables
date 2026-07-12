@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>All Articles — Great Tables</title>
+  <meta name="description" content="Every Google Sheets tutorial on Great Tables in one place — formulas, data validation, troubleshooting, and more.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vo1ua.github.io/great-tables/articles.html">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5;
+      --card: #FFFFFF;
+      --ink: #1C2B2E;
+      --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0;
+      --sheet-green: #1E7145;
+      --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--paper);
+      background-image:
+        linear-gradient(var(--grid-line) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px;
+      color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif;
+      line-height: 1.65;
+      font-size: 18px;
+    }
+
+    .top-nav {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 14px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+    }
+    .top-nav .brand {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--ink);
+      text-decoration: none;
+    }
+    .top-nav .nav-links { display: flex; gap: 20px; }
+    .top-nav .nav-links a {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--sheet-green);
+      text-decoration: none;
+      padding-bottom: 2px;
+      border-bottom: 2px solid transparent;
+      transition: border-color 0.15s ease;
+    }
+    .top-nav .nav-links a:hover { border-bottom-color: var(--sheet-green); }
+    .top-nav .nav-links a.active { border-bottom-color: var(--sheet-green); }
+
+    .col-strip {
+      display: flex;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-soft);
+      background: var(--card);
+      border-bottom: 1px solid var(--grid-line);
+    }
+    .col-strip span {
+      flex: 1;
+      text-align: center;
+      padding: 6px 0;
+      border-right: 1px solid var(--grid-line);
+    }
+    .col-strip span:last-child { border-right: none; }
+
+    main {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    .hero {
+      background: var(--card);
+      border: 1px solid var(--grid-line);
+      border-radius: 4px;
+      padding: 40px 48px;
+      box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06);
+      margin-bottom: 24px;
+    }
+
+    h1 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-weight: 700;
+      font-size: 30px;
+      line-height: 1.25;
+      margin: 0 0 14px;
+    }
+
+    .lede { color: var(--ink-soft); margin: 0; font-size: 17px; }
+
+    .post-list { display: flex; flex-direction: column; gap: 14px; }
+
+    .post-card {
+      display: block;
+      background: var(--card);
+      border: 1px solid var(--grid-line);
+      border-left: 3px solid var(--sheet-green);
+      border-radius: 4px;
+      padding: 22px 26px;
+      text-decoration: none;
+      color: var(--ink);
+      transition: box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .post-card:hover {
+      box-shadow: 0 4px 12px rgba(28, 43, 46, 0.08);
+      transform: translateY(-1px);
+    }
+    .post-card .formula-tag {
+      display: inline-block;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      background: var(--cell-highlight);
+      border: 1px solid #E8D98A;
+      color: #4A3F00;
+      padding: 2px 8px;
+      border-radius: 3px;
+      margin-bottom: 10px;
+    }
+    .post-card h2 {
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 19px;
+      font-weight: 600;
+      margin: 0 0 6px;
+    }
+    .post-card p { margin: 0; font-size: 15.5px; color: var(--ink-soft); }
+
+    footer {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 20px 24px 60px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+    }
+    footer a {
+      color: var(--sheet-green);
+      text-decoration: none;
+      border-bottom: 1px solid var(--sheet-green);
+    }
+
+    @media (max-width: 640px) {
+      .hero { padding: 32px 28px; }
+      h1 { font-size: 24px; }
+      body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="index.html" class="brand">Great Tables</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="articles.html" class="active">Articles</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <main>
+
+    <div class="hero">
+      <h1>All Articles</h1>
+      <p class="lede">Every Google Sheets tutorial on Great Tables, in one place.</p>
+    </div>
+
+    <div class="post-list">
+      <a class="post-card" href="refer-to-cell-in-another-tab.html">
+        <span class="formula-tag">=Sales!D5</span>
+        <h2>How to Refer to a Cell in Another Tab</h2>
+        <p>The basic formula for pulling data between tabs, plus how to fix the #REF! error.</p>
+      </a>
+
+      <a class="post-card" href="dropdown-list-from-another-sheet.html">
+        <span class="formula-tag">=Data!A2:A</span>
+        <h2>How to Create a Drop-Down List from Another Sheet</h2>
+        <p>Pull dropdown options from a different tab, with dynamic ranges and named ranges.</p>
+      </a>
+
+      <a class="post-card" href="how-to-copy-comments.html">
+        <span class="formula-tag">// comment</span>
+        <h2>How to Copy Comments in Google Sheets</h2>
+        <p>Why regular copy-paste doesn't work, and two reliable ways to copy comments instead.</p>
+      </a>
+
+      <a class="post-card" href="cant-connect-to-google-sheets.html">
+        <span class="formula-tag">! Trying to connect</span>
+        <h2>Google Sheets Won't Connect? How to Fix It</h2>
+        <p>The most common causes of connection errors in Google Sheets, and how to fix each one.</p>
+      </a>
+    </div>
+
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a> · <a href="about.html">About</a>
+  </footer>
+
+</body>
+</html>
