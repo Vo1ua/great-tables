@@ -1,0 +1,18 @@
+# Great Tables
+
+> Practical, tested Google Sheets tutorials — formulas, data validation, troubleshooting, and file management, explained step by step for beginners.
+
+## Articles
+
+- [How to Refer to a Cell in Another Tab](https://vo1ua.github.io/great-tables/refer-to-cell-in-another-tab.html): The basic formula for pulling data between tabs, plus how to fix the #REF! error.
+- [How to Create a Drop-Down List from Another Sheet](https://vo1ua.github.io/great-tables/dropdown-list-from-another-sheet.html): Pull dropdown options from a different tab using data validation and named ranges.
+- [How to Copy Comments in Google Sheets](https://vo1ua.github.io/great-tables/how-to-copy-comments.html): Why regular copy-paste doesn't work, and two reliable ways to copy comments instead.
+- [Google Sheets Won't Connect? How to Fix It](https://vo1ua.github.io/great-tables/cant-connect-to-google-sheets.html): The most common causes of connection errors, and how to fix each one.
+- [How to Automatically Add Numbers](https://vo1ua.github.io/great-tables/automatically-add-numbers.html): Using SUM, AutoSum, and open-ended ranges that update automatically as data grows.
+- [How to Freeze a Row](https://vo1ua.github.io/great-tables/freeze-a-row.html): Three methods to keep header rows visible while scrolling, plus how to unfreeze.
+- [How to Download One Tab](https://vo1ua.github.io/great-tables/download-one-tab.html): Exporting a single tab as CSV, PDF, or Excel without the whole workbook.
+
+## Reference
+
+- [Glossary](https://vo1ua.github.io/great-tables/glossary.html): Plain-English definitions of Google Sheets terms like cell reference, named range, and data validation.
+- [About](https://vo1ua.github.io/great-tables/about.html): Who writes Great Tables and how each tutorial is tested before publishing.
