@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets Formula to Calculate a Running Balance</title>
+  <meta name="description" content="Learn how to calculate a running balance in Google Sheets, from a simple drag-down formula to a fully automatic ARRAYFORMULA that updates with every new row.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vo1ua.github.io/great-tables/running-balance-formula.html">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5; --card: #FFFFFF; --ink: #1C2B2E; --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0; --sheet-green: #1E7145; --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2; --error-red: #B3413A;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--paper);
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px; color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif; line-height: 1.65; font-size: 18px;
+    }
+    .top-nav { max-width: 760px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .top-nav .brand { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); text-decoration: none; }
+    .top-nav .nav-links { display: flex; gap: 20px; }
+    .top-nav .nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: var(--sheet-green); text-decoration: none; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: border-color 0.15s ease; }
+    .top-nav .nav-links a:hover { border-bottom-color: var(--sheet-green); }
+    .col-strip { display: flex; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .col-strip span { flex: 1; text-align: center; padding: 6px 0; border-right: 1px solid var(--grid-line); }
+    .col-strip span:last-child { border-right: none; }
+    .formula-bar { background: var(--card); border-bottom: 1px solid var(--grid-line); padding: 18px 24px; display: flex; align-items: center; gap: 14px; max-width: 760px; margin: 0 auto; }
+    .formula-bar .fx { font-family: 'IBM Plex Mono', monospace; font-style: italic; color: var(--sheet-green); font-weight: 600; font-size: 15px; }
+    .formula-bar .formula-text { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--ink-soft); border-left: 1px solid var(--grid-line); padding-left: 14px; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    .card { background: var(--card); border: 1px solid var(--grid-line); border-radius: 4px; padding: 48px 56px; box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06); }
+    h1 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 27px; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 28px; }
+    h2 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 22px; margin: 44px 0 16px; padding-left: 14px; border-left: 3px solid var(--sheet-green); }
+    h3 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 17px; color: var(--ink-soft); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin: 0 0 18px; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; background: var(--cell-highlight); padding: 2px 7px; border-radius: 3px; border: 1px solid #E8D98A; color: #4A3F00; }
+    table { width: 100%; border-collapse: collapse; margin: 0 0 22px; font-size: 15.5px; }
+    th, td { border: 1px solid var(--grid-line); padding: 8px 12px; text-align: left; }
+    th { background: var(--sheet-green-soft); font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 14px; }
+    td { font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    ul, ol { margin: 0 0 20px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    ul li strong, ol li strong { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.92em; }
+    .callout { background: var(--sheet-green-soft); border-left: 3px solid var(--sheet-green); padding: 14px 18px; border-radius: 0 4px 4px 0; font-size: 16px; margin: 0 0 20px; }
+    .error-block { border-left: 3px solid var(--error-red); padding-left: 14px; }
+    .related-tutorials { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--grid-line); }
+    .related-tutorials .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+    .related-tutorials a { display: block; text-decoration: none; color: var(--ink); padding: 14px 18px; border-left: 3px solid var(--sheet-green); background: var(--sheet-green-soft); border-radius: 0 4px 4px 0; margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; font-size: 15.5px; font-weight: 600; }
+    footer { max-width: 720px; margin: 0 auto; padding: 0 24px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    footer a { color: var(--sheet-green); text-decoration: none; border-bottom: 1px solid var(--sheet-green); }
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; } h1 { font-size: 22px; } body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+      table { font-size: 13.5px; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Google Sheets Formula to Calculate a Running Balance",
+  "description": "Learn how to calculate a running balance in Google Sheets, from a simple drag-down formula to a fully automatic ARRAYFORMULA that updates with every new row.",
+  "datePublished": "2026-07-16",
+  "dateModified": "2026-07-16",
+  "author": { "@type": "Organization", "name": "Great Tables" },
+  "publisher": { "@type": "Organization", "name": "Great Tables" },
+  "mainEntityOfPage": "https://vo1ua.github.io/great-tables/running-balance-formula.html"
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://vo1ua.github.io/great-tables/" },
+    { "@type": "ListItem", "position": 2, "name": "Running Balance Formula", "item": "https://vo1ua.github.io/great-tables/running-balance-formula.html" }
+  ]
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "What's the difference between a running balance and a regular SUM?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "SUM gives one final total for a whole range. A running balance shows the cumulative total after every individual row, so you can see the balance at any point in time, not just at the end."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Do I need to know ARRAYFORMULA to build a running balance?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. The simple drag-down method works perfectly well for most spreadsheets. ARRAYFORMULA is only useful if you want the balance to fill in automatically without dragging the formula down yourself."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does my running balance show 0 in empty rows below my data?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This happens with ARRAYFORMULA versions that don't check for blank rows. Wrapping the formula in an IF that checks whether the row has data prevents the balance from repeating into empty rows."
+      }
+    }
+  ]
+}
+</script>
+
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="index.html" class="brand">Great Tables</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="articles.html">Articles</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">fx</span>
+    <span class="formula-text">=D2+B3-C3</span>
+  </div>
+
+  <main>
+
+    <nav style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft);">
+      <a href="index.html" style="color: var(--sheet-green); text-decoration: none;">Home</a>
+      <span style="margin: 0 6px;">/</span>
+      <span>Running Balance Formula</span>
+    </nav>
+
+    <div class="card">
+      <article>
+
+        <h1>Google Sheets Formula to Calculate a Running Balance</h1>
+
+        <p>
+          A running balance shows your account balance after every single transaction, not just
+          a final total at the bottom. It's the difference between "here's what you spent this
+          month" and "here's exactly how much you had left after each purchase" — and it's one of
+          the most useful things you can add to any ledger, budget, or expense tracker.
+        </p>
+
+        <h2>Setting Up Your Columns</h2>
+        <p>
+          A typical running balance setup uses four columns: date, income (money in), expense
+          (money out), and the balance itself.
+        </p>
+        <table>
+          <tr><th>Date</th><th>Income</th><th>Expense</th><th>Balance</th></tr>
+          <tr><td>7/1</td><td>2000</td><td></td><td>2000</td></tr>
+          <tr><td>7/3</td><td></td><td>85</td><td>1915</td></tr>
+          <tr><td>7/10</td><td>500</td><td></td><td>2415</td></tr>
+        </table>
+        <p>
+          The first row's balance is just your starting amount. Every row after that adds the
+          new income, subtracts the new expense, and carries forward from the previous balance.
+        </p>
+
+        <h2>Method 1: The Drag-Down Formula (Simplest)</h2>
+        <p>
+          In the first data row (row 2), set the starting balance directly — just type the
+          number. In the second data row (row 3), enter:
+        </p>
+        <p><code>=D2+B3-C3</code></p>
+        <p>
+          This takes the previous row's balance (D2), adds this row's income (B3), and subtracts
+          this row's expense (C3).
+        </p>
+        <ol>
+          <li>Click the cell with this formula.</li>
+          <li>Double-click the small blue square (fill handle) in its bottom-right corner, or drag it down manually.</li>
+        </ol>
+        <div class="callout">
+          Google Sheets automatically adjusts the row numbers as it copies down, so row 4 becomes
+          <code>=D3+B4-C4</code>, row 5 becomes <code>=D4+B5-C5</code>, and so on.
+        </div>
+        <p>
+          The one drawback: you have to remember to drag the formula down every time you add a
+          new transaction. If you forget, the new row simply won't have a balance.
+        </p>
+
+        <h2>Method 2: ARRAYFORMULA (Fully Automatic)</h2>
+        <p>
+          If you'd rather never drag a formula down again, a single ARRAYFORMULA in the very top
+          cell can calculate the entire column at once, automatically extending as new rows are
+          added:
+        </p>
+        <p><code>=ARRAYFORMULA(IF(B2:B="", "", SUM(B$2:B2)-SUM(C$2:C2)))</code></p>
+        <p>
+          Here's what each part is doing:
+        </p>
+        <ul>
+          <li><code>IF(B2:B="", "", ...)</code> — leaves the cell blank if there's no income entered on that row, so the formula doesn't spill into unused rows</li>
+          <li><code>SUM(B$2:B2)</code> — adds up all income from row 2 down to the current row, using a mix of an absolute and relative reference so the starting point never moves</li>
+          <li><code>SUM(C$2:C2)</code> — does the same for expenses</li>
+        </ul>
+        <p>
+          Enter this once in cell D2, and the whole column fills in on its own — including any
+          new rows you add later, with no copying or dragging required.
+        </p>
+
+        <h2>Adding a Starting Balance</h2>
+        <p>
+          If you're tracking an existing account rather than starting from zero, add your
+          starting balance to either version of the formula:
+        </p>
+        <p><code>=$G$1+SUM(B$2:B2)-SUM(C$2:C2)</code></p>
+        <p>
+          Where G1 holds your starting balance in a fixed cell, referenced with dollar signs so
+          it never changes as the formula copies down.
+        </p>
+
+        <h2>Common Issues</h2>
+
+        <div class="error-block">
+          <h3>Balance Shows 0 in Rows Below My Actual Data</h3>
+          <p>
+            This happens when an ARRAYFORMULA version doesn't check for blank rows first. Make
+            sure the formula includes an <code>IF(B2:B="", "", ...)</code> check, as shown above,
+            so it stops calculating once it reaches empty rows.
+          </p>
+        </div>
+
+        <div class="error-block">
+          <h3>Balance Doesn't Match My Bank Statement</h3>
+          <p>
+            Double-check that every transaction is entered as either income or an expense, not
+            both, and that no rows were skipped. A single missing entry throws off every balance
+            after it.
+          </p>
+        </div>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>What's the difference between a running balance and a regular SUM?</h3>
+        <p>
+          SUM gives one final total for a whole range. A running balance shows the cumulative
+          total after every individual row, so you can see the balance at any point in time, not
+          just at the end.
+        </p>
+
+        <h3>Do I need to know ARRAYFORMULA to build a running balance?</h3>
+        <p>
+          No. The simple drag-down method works perfectly well for most spreadsheets.
+          ARRAYFORMULA is only useful if you want the balance to fill in automatically without
+          dragging the formula down yourself.
+        </p>
+
+        <h3>Why does my running balance show 0 in empty rows below my data?</h3>
+        <p>
+          This happens with ARRAYFORMULA versions that don't check for blank rows. Wrapping the
+          formula in an IF that checks whether the row has data prevents the balance from
+          repeating into empty rows.
+        </p>
+
+        <div class="related-tutorials">
+          <div class="section-label">Related tutorials</div>
+          <a href="automatically-add-numbers.html">How to Automatically Add Numbers in Google Sheets</a>
+          <a href="shared-expenses-with-partner.html">How to Track Shared Expenses with a Partner</a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a> · <a href="about.html">About</a>
+  </footer>
+
+</body>
+</html>
