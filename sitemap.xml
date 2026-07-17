@@ -62,23 +62,38 @@
   </url>
 
   <url>
-    <loc>https://vo1ua.github.io/great-tables/fetch-data-sheet-to-form.html/loc>
+    <loc>https://vo1ua.github.io/great-tables/fetch-data-sheet-to-form.html</loc>
     <lastmod>2026-07-16</lastmod>
   </url>
 
   <url>
-    <loc>https://vo1ua.github.io/great-tables/shared-expenses-with-partner.html/loc>
+    <loc>https://vo1ua.github.io/great-tables/shared-expenses-with-partner.html</loc>
     <lastmod>2026-07-16</lastmod>
   </url>
 
   <url>
-    <loc>https://vo1ua.github.io/great-tables/running-balance-formula.html/loc>
+    <loc>https://vo1ua.github.io/great-tables/running-balance-formula.html</loc>
     <lastmod>2026-07-16</lastmod>
   </url>
 
   <url>
-    <loc>https://vo1ua.github.io/great-tables/pdf-links-not-working.html/loc>
+    <loc>https://vo1ua.github.io/great-tables/pdf-links-not-working.html</loc>
     <lastmod>2026-07-16</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vo1ua.github.io/great-tables/templates/index.html</loc>
+    <lastmod>2026-07-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vo1ua.github.io/great-tables/templates/finance/index.html</loc>
+    <lastmod>2026-07-17</lastmod>
+  </url>
+
+  <url>
+    <loc>https://vo1ua.github.io/great-tables/templates/finance/running-balance-tracker.html</loc>
+    <lastmod>2026-07-17</lastmod>
   </url>
   
 </urlset>
