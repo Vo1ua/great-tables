@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Set a Default Value for a Dropdown in Google Sheets</title>
+  <meta name="description" content="Google Sheets dropdowns start out blank by default. Here's how to pre-fill a default option, using a simple pre-set approach and a self-resetting formula method.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vo1ua.github.io/great-tables/dropdown-default-value.html">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5; --card: #FFFFFF; --ink: #1C2B2E; --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0; --sheet-green: #1E7145; --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2; --error-red: #B3413A;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--paper);
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px; color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif; line-height: 1.65; font-size: 18px;
+    }
+    .top-nav { max-width: 760px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .top-nav .brand { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); text-decoration: none; }
+    .top-nav .nav-links { display: flex; gap: 20px; }
+    .top-nav .nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: var(--sheet-green); text-decoration: none; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: border-color 0.15s ease; }
+    .top-nav .nav-links a:hover { border-bottom-color: var(--sheet-green); }
+    .col-strip { display: flex; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .col-strip span { flex: 1; text-align: center; padding: 6px 0; border-right: 1px solid var(--grid-line); }
+    .col-strip span:last-child { border-right: none; }
+    .formula-bar { background: var(--card); border-bottom: 1px solid var(--grid-line); padding: 18px 24px; display: flex; align-items: center; gap: 14px; max-width: 760px; margin: 0 auto; }
+    .formula-bar .fx { font-family: 'IBM Plex Mono', monospace; font-style: italic; color: var(--sheet-green); font-weight: 600; font-size: 15px; }
+    .formula-bar .formula-text { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--ink-soft); border-left: 1px solid var(--grid-line); padding-left: 14px; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    .card { background: var(--card); border: 1px solid var(--grid-line); border-radius: 4px; padding: 48px 56px; box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06); }
+    h1 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 25px; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 28px; }
+    h2 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 22px; margin: 44px 0 16px; padding-left: 14px; border-left: 3px solid var(--sheet-green); }
+    h3 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 17px; color: var(--ink-soft); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin: 0 0 18px; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; background: var(--cell-highlight); padding: 2px 7px; border-radius: 3px; border: 1px solid #E8D98A; color: #4A3F00; }
+    ol, ul { margin: 0 0 20px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    ul li strong, ol li strong { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.92em; }
+    .callout { background: var(--sheet-green-soft); border-left: 3px solid var(--sheet-green); padding: 14px 18px; border-radius: 0 4px 4px 0; font-size: 16px; margin: 0 0 20px; }
+    .error-block { border-left: 3px solid var(--error-red); padding-left: 14px; }
+    .related-tutorials { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--grid-line); }
+    .related-tutorials .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+    .related-tutorials a { display: block; text-decoration: none; color: var(--ink); padding: 14px 18px; border-left: 3px solid var(--sheet-green); background: var(--sheet-green-soft); border-radius: 0 4px 4px 0; margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; font-size: 15.5px; font-weight: 600; }
+    footer { max-width: 720px; margin: 0 auto; padding: 0 24px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    footer a { color: var(--sheet-green); text-decoration: none; border-bottom: 1px solid var(--sheet-green); }
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; } h1 { font-size: 21px; } body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "How to Set a Default Value for a Dropdown in Google Sheets",
+  "description": "Google Sheets dropdowns start out blank by default. Here's how to pre-fill a default option, using a simple pre-set approach and a self-resetting formula method.",
+  "datePublished": "2026-07-18",
+  "dateModified": "2026-07-18",
+  "author": { "@type": "Organization", "name": "Great Tables" },
+  "publisher": { "@type": "Organization", "name": "Great Tables" },
+  "mainEntityOfPage": "https://vo1ua.github.io/great-tables/dropdown-default-value.html"
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://vo1ua.github.io/great-tables/" },
+    { "@type": "ListItem", "position": 2, "name": "Dropdown Default Value", "item": "https://vo1ua.github.io/great-tables/dropdown-default-value.html" }
+  ]
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does Google Sheets have a built-in default value setting for dropdowns?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "No. Data validation in Google Sheets has no native default value option, so dropdown cells start blank until manually pre-filled."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Will the pre-set default value get overwritten if the user picks a different option?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes, with the simple pre-set method. Typing the default value directly into the cell just gives it a starting point, and selecting a different dropdown option replaces it normally."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Why does the self-resetting formula show a circular reference error?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "This happens because the formula references its own cell. Enabling iterative calculation in Google Sheets settings, with the iteration count set to 1, resolves it."
+      }
+    }
+  ]
+}
+</script>
+
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="index.html" class="brand">Great Tables</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="articles.html">Articles</a>
+      <a href="templates/index.html">Templates</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">chip</span>
+    <span class="formula-text">Default: "Not Started"</span>
+  </div>
+
+  <main>
+
+    <nav style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft);">
+      <a href="index.html" style="color: var(--sheet-green); text-decoration: none;">Home</a>
+      <span style="margin: 0 6px;">/</span>
+      <span>Dropdown Default Value</span>
+    </nav>
+
+    <div class="card">
+      <article>
+
+        <h1>How to Set a Default Value for a Dropdown in Google Sheets</h1>
+
+        <p>
+          By default, a dropdown created with data validation starts out empty until someone
+          makes a selection. That's not always what you want — if most rows should start as
+          "Not Started" or "Pending," it's more efficient to pre-fill that value than to leave
+          every new row blank. Google Sheets has no built-in setting for this, but there are two
+          reliable ways to get the same result.
+        </p>
+
+        <h2>Method 1: Pre-Fill the Cell Directly (Simplest)</h2>
+        <p>
+          The most straightforward approach: after setting up your dropdown with data validation,
+          just type the value you want as the default directly into the cell — as long as it
+          exactly matches one of the dropdown's valid options, it will display normally as a
+          selected chip.
+        </p>
+        <ol>
+          <li>Set up your dropdown as usual through <strong>Data</strong> → <strong>Data validation</strong>.</li>
+          <li>Click the cell (or select the whole column of cells).</li>
+          <li>Type the exact text of your default option, for example <code>Not Started</code>.</li>
+          <li>Press Enter.</li>
+        </ol>
+        <div class="callout">
+          This works because data validation only restricts what a user can type or select — it
+          doesn't stop you from entering a matching value programmatically or manually ahead of
+          time.
+        </div>
+        <p>
+          The limitation: this is a one-time pre-fill. If someone clears the cell, it goes back
+          to blank, not automatically back to your default.
+        </p>
+
+        <h2>Method 2: A Self-Resetting Default (Formula-Based)</h2>
+        <p>
+          If you want the cell to automatically return to a default value whenever it's cleared —
+          not just once, but every time — this requires a small formula trick using a circular
+          reference.
+        </p>
+        <ol>
+          <li>Go to <strong>File</strong> → <strong>Settings</strong> → <strong>Calculation</strong>.</li>
+          <li>Set <strong>Iterative calculation</strong> to <strong>On</strong>, with max iterations set to <strong>1</strong>.</li>
+          <li>In your dropdown cell, enter a formula like: <code>=IF(A1="", "Not Started", A1)</code></li>
+        </ol>
+        <p>
+          With iterative calculation enabled, this formula can safely reference its own cell: if
+          the cell is empty, it shows "Not Started"; if a value has been entered (including a
+          dropdown selection), it shows that value instead.
+        </p>
+        <div class="error-block">
+          <h3>Circular Reference Warning</h3>
+          <p>
+            Without enabling iterative calculation first, this formula throws a circular
+            dependency error, since the cell is referencing itself. This is expected — turning on
+            iterative calculation with 1 iteration is what makes it work safely.
+          </p>
+        </div>
+
+        <h2>Which Method to Use</h2>
+        <ul>
+          <li><strong>One-time setup, simple lists:</strong> Method 1 — pre-fill the cell directly</li>
+          <li><strong>Cell should always fall back to a default when cleared:</strong> Method 2 — self-resetting formula</li>
+        </ul>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>Does Google Sheets have a built-in default value setting for dropdowns?</h3>
+        <p>
+          No. Data validation in Google Sheets has no native default value option, so dropdown
+          cells start blank until manually pre-filled.
+        </p>
+
+        <h3>Will the pre-set default value get overwritten if the user picks a different option?</h3>
+        <p>
+          Yes, with the simple pre-set method. Typing the default value directly into the cell
+          just gives it a starting point, and selecting a different dropdown option replaces it
+          normally.
+        </p>
+
+        <h3>Why does the self-resetting formula show a circular reference error?</h3>
+        <p>
+          This happens because the formula references its own cell. Enabling iterative
+          calculation in Google Sheets settings, with the iteration count set to 1, resolves it.
+        </p>
+
+        <div class="related-tutorials">
+          <div class="section-label">Related tutorials</div>
+          <a href="dropdown-list-from-another-sheet.html">How to Create a Drop-Down List from Another Sheet</a>
+          <a href="refer-to-cell-in-another-tab.html">How to Refer to a Cell in Another Tab</a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a> · <a href="about.html">About</a>
+  </footer>
+
+</body>
+</html>
