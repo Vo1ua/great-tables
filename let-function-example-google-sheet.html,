@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Google Sheets LET Function: A Practical Example</title>
+  <meta name="description" content="The LET function lets you name parts of a formula so you can reuse them without recalculating. Here's a practical example and when it actually helps.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://vo1ua.github.io/great-tables/let-function-example.html">
+
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@500;600;700&family=Source+Serif+4:opsz,wght@8..60,400;8..60,600&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --paper: #F7F8F5; --card: #FFFFFF; --ink: #1C2B2E; --ink-soft: #4B5D60;
+      --grid-line: #DCE3E0; --sheet-green: #1E7145; --sheet-green-soft: #E6F1EA;
+      --cell-highlight: #FFF2B2; --error-red: #B3413A;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0; background: var(--paper);
+      background-image: linear-gradient(var(--grid-line) 1px, transparent 1px), linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+      background-size: 32px 32px; color: var(--ink);
+      font-family: 'Source Serif 4', Georgia, serif; line-height: 1.65; font-size: 18px;
+    }
+    .top-nav { max-width: 760px; margin: 0 auto; padding: 14px 24px; display: flex; align-items: center; justify-content: space-between; background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .top-nav .brand { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 16px; color: var(--ink); text-decoration: none; }
+    .top-nav .nav-links { display: flex; gap: 20px; }
+    .top-nav .nav-links a { font-family: 'IBM Plex Mono', monospace; font-size: 14px; font-weight: 600; color: var(--sheet-green); text-decoration: none; padding-bottom: 2px; border-bottom: 2px solid transparent; transition: border-color 0.15s ease; }
+    .top-nav .nav-links a:hover { border-bottom-color: var(--sheet-green); }
+    .col-strip { display: flex; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--ink-soft); background: var(--card); border-bottom: 1px solid var(--grid-line); }
+    .col-strip span { flex: 1; text-align: center; padding: 6px 0; border-right: 1px solid var(--grid-line); }
+    .col-strip span:last-child { border-right: none; }
+    .formula-bar { background: var(--card); border-bottom: 1px solid var(--grid-line); padding: 18px 24px; display: flex; align-items: center; gap: 14px; max-width: 760px; margin: 0 auto; }
+    .formula-bar .fx { font-family: 'IBM Plex Mono', monospace; font-style: italic; color: var(--sheet-green); font-weight: 600; font-size: 15px; }
+    .formula-bar .formula-text { font-family: 'IBM Plex Mono', monospace; font-size: 15px; color: var(--ink-soft); border-left: 1px solid var(--grid-line); padding-left: 14px; }
+    main { max-width: 720px; margin: 0 auto; padding: 40px 24px 80px; }
+    .card { background: var(--card); border: 1px solid var(--grid-line); border-radius: 4px; padding: 48px 56px; box-shadow: 0 1px 3px rgba(28, 43, 46, 0.06); }
+    h1 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 700; font-size: 26px; line-height: 1.25; letter-spacing: -0.01em; margin: 0 0 28px; }
+    h2 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 22px; margin: 44px 0 16px; padding-left: 14px; border-left: 3px solid var(--sheet-green); }
+    h3 { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 17px; color: var(--ink-soft); margin: 28px 0 10px; text-transform: uppercase; letter-spacing: 0.04em; }
+    p { margin: 0 0 18px; }
+    code { font-family: 'IBM Plex Mono', monospace; font-size: 0.88em; background: var(--cell-highlight); padding: 2px 7px; border-radius: 3px; border: 1px solid #E8D98A; color: #4A3F00; }
+    pre { background: var(--ink); color: #E8ECEA; padding: 16px 18px; border-radius: 4px; overflow-x: auto; font-family: 'IBM Plex Mono', monospace; font-size: 0.82em; line-height: 1.5; margin: 0 0 20px; }
+    ul, ol { margin: 0 0 20px; padding-left: 22px; }
+    li { margin-bottom: 8px; }
+    ul li strong, ol li strong { font-family: 'IBM Plex Mono', monospace; font-weight: 600; font-size: 0.92em; }
+    .callout { background: var(--sheet-green-soft); border-left: 3px solid var(--sheet-green); padding: 14px 18px; border-radius: 0 4px 4px 0; font-size: 16px; margin: 0 0 20px; }
+    .error-block { border-left: 3px solid var(--error-red); padding-left: 14px; }
+    .related-tutorials { margin-top: 56px; padding-top: 32px; border-top: 1px solid var(--grid-line); }
+    .related-tutorials .section-label { font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 16px; }
+    .related-tutorials a { display: block; text-decoration: none; color: var(--ink); padding: 14px 18px; border-left: 3px solid var(--sheet-green); background: var(--sheet-green-soft); border-radius: 0 4px 4px 0; margin-bottom: 10px; font-family: 'IBM Plex Sans', sans-serif; font-size: 15.5px; font-weight: 600; }
+    footer { max-width: 720px; margin: 0 auto; padding: 0 24px 60px; font-family: 'IBM Plex Mono', monospace; font-size: 14px; }
+    footer a { color: var(--sheet-green); text-decoration: none; border-bottom: 1px solid var(--sheet-green); }
+    @media (max-width: 640px) {
+      .card { padding: 32px 24px; } h1 { font-size: 21px; } body { font-size: 16.5px; }
+      .col-strip span:nth-child(n+7) { display: none; }
+    }
+  </style>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "Google Sheets LET Function: A Practical Example",
+  "description": "The LET function lets you name parts of a formula so you can reuse them without recalculating. Here's a practical example and when it actually helps.",
+  "datePublished": "2026-07-18",
+  "dateModified": "2026-07-18",
+  "author": { "@type": "Organization", "name": "Great Tables" },
+  "publisher": { "@type": "Organization", "name": "Great Tables" },
+  "mainEntityOfPage": "https://vo1ua.github.io/great-tables/let-function-example.html"
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://vo1ua.github.io/great-tables/" },
+    { "@type": "ListItem", "position": 2, "name": "LET Function Example", "item": "https://vo1ua.github.io/great-tables/let-function-example.html" }
+  ]
+}
+</script>
+
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@type": "Question",
+      "name": "Does LET make my spreadsheet faster?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "It can, especially in large spreadsheets. LET calculates each named expression once and reuses the result, instead of recalculating the same subexpression every time it appears in the formula."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "Can one LET variable use another variable defined earlier in the same formula?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Yes. Each name can reference any name defined before it in the same LET function, which lets you build up a calculation step by step."
+      }
+    },
+    {
+      "@type": "Question",
+      "name": "What happens if I forget the final formula expression in LET?",
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": "Google Sheets returns an error, since LET always requires a final expression at the end that uses the names you defined to produce the actual result."
+      }
+    }
+  ]
+}
+</script>
+
+</head>
+<body>
+
+  <div class="top-nav">
+    <a href="index.html" class="brand">Great Tables</a>
+    <div class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="articles.html">Articles</a>
+      <a href="templates/index.html">Templates</a>
+      <a href="glossary.html">Glossary</a>
+      <a href="about.html">About</a>
+    </div>
+  </div>
+
+  <div class="col-strip">
+    <span>A</span><span>B</span><span>C</span><span>D</span><span>E</span><span>F</span><span>G</span><span>H</span>
+  </div>
+
+  <div class="formula-bar">
+    <span class="fx">fx</span>
+    <span class="formula-text">=LET(total, SUM(A2:A), avg, total/COUNT(A2:A), avg)</span>
+  </div>
+
+  <main>
+
+    <nav style="margin: 0 0 16px; font-family: 'IBM Plex Mono', monospace; font-size: 13px; color: var(--ink-soft);">
+      <a href="index.html" style="color: var(--sheet-green); text-decoration: none;">Home</a>
+      <span style="margin: 0 6px;">/</span>
+      <span>LET Function Example</span>
+    </nav>
+
+    <div class="card">
+      <article>
+
+        <h1>Google Sheets LET Function: A Practical Example</h1>
+
+        <p>
+          Long formulas often repeat the same calculation two or three times — once for a check,
+          again for the actual result. LET fixes this by letting you name a calculation once and
+          reuse that name throughout the rest of the formula, instead of writing the same
+          expression over and over.
+        </p>
+
+        <h2>The Syntax</h2>
+        <p><code>=LET(name1, value_expression1, name2, value_expression2, formula_expression)</code></p>
+        <ul>
+          <li><strong>name1, name2...</strong> — labels you choose for each value</li>
+          <li><strong>value_expression1, value_expression2...</strong> — the actual calculation or cell reference stored under that name</li>
+          <li><strong>formula_expression</strong> — the final calculation, using the names you defined; this is required and must come last</li>
+        </ul>
+
+        <h2>A Practical Example</h2>
+        <p>
+          Without LET, calculating an average and then checking whether it's above a threshold
+          often means repeating the AVERAGE formula twice:
+        </p>
+        <p><code>=IF(AVERAGE(B2:D2)&gt;=4, "Great", IF(AVERAGE(B2:D2)&gt;=3, "Good", "Poor"))</code></p>
+        <p>
+          Notice that AVERAGE(B2:D2) is calculated three separate times. With LET, it only needs
+          to be calculated once:
+        </p>
+        <pre>=LET(
+  avg, AVERAGE(B2:D2),
+  IF(avg&gt;=4, "Great", IF(avg&gt;=3, "Good", "Poor"))
+)</pre>
+        <p>
+          Here, <code>avg</code> is calculated a single time and then reused in both parts of the
+          IF statement — same result, cleaner formula, and less repeated calculation.
+        </p>
+
+        <h2>Using Multiple Names That Build on Each Other</h2>
+        <p>
+          Each name in LET can reference names defined earlier in the same formula, letting you
+          build a calculation step by step:
+        </p>
+        <pre>=LET(
+  price, C2,
+  quantity, D2,
+  subtotal, price * quantity,
+  tax, subtotal * 0.08,
+  subtotal + tax
+)</pre>
+        <p>
+          Here, <code>subtotal</code> depends on <code>price</code> and <code>quantity</code>,
+          and <code>tax</code> depends on <code>subtotal</code> — each step is readable on its
+          own instead of buried in one long nested formula.
+        </p>
+
+        <h2>Why This Matters for Performance</h2>
+        <p>
+          In a small spreadsheet, the difference is negligible. But in a large sheet where a
+          formula like this is copied down thousands of rows, recalculating the same
+          subexpression multiple times per row adds up. LET computes each named value once per
+          row instead of two or three times, which can noticeably reduce lag in heavier
+          spreadsheets.
+        </p>
+
+        <h2>Common Issues</h2>
+
+        <div class="error-block">
+          <h3>"Last Argument Missing" Error</h3>
+          <p>
+            LET always requires a final formula expression after all the name/value pairs. A
+            common mistake is ending the formula right after the last value definition. Make
+            sure the very last item in the formula is the calculation that actually uses your
+            named values.
+          </p>
+        </div>
+
+        <div class="error-block">
+          <h3>Using a Name Before It's Defined</h3>
+          <p>
+            Names can only reference names that come <em>before</em> them in the formula, not
+            after. If a later name needs to use an earlier one, make sure they're listed in the
+            right order.
+          </p>
+        </div>
+
+        <h2>Frequently Asked Questions</h2>
+
+        <h3>Does LET make my spreadsheet faster?</h3>
+        <p>
+          It can, especially in large spreadsheets. LET calculates each named expression once
+          and reuses the result, instead of recalculating the same subexpression every time it
+          appears in the formula.
+        </p>
+
+        <h3>Can one LET variable use another variable defined earlier in the same formula?</h3>
+        <p>
+          Yes. Each name can reference any name defined before it in the same LET function, which
+          lets you build up a calculation step by step.
+        </p>
+
+        <h3>What happens if I forget the final formula expression in LET?</h3>
+        <p>
+          Google Sheets returns an error, since LET always requires a final expression at the end
+          that uses the names you defined to produce the actual result.
+        </p>
+
+        <div class="related-tutorials">
+          <div class="section-label">Related tutorials</div>
+          <a href="standard-error.html">How to Calculate Standard Error in Google Sheets</a>
+          <a href="filter-unique-values.html">Google Sheets: How to Filter Unique Values</a>
+        </div>
+
+      </article>
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">&larr; Back to Home</a> · <a href="about.html">About</a>
+  </footer>
+
+</body>
+</html>
